@@ -1,0 +1,27 @@
+Axway Appcelerator Studio version:
+build: 5.1.1.201809051655
+
+Titanium APK 7.0.1.GA 
+how to install?
+https://stackoverflow.com/questions/35859948/download-previous-versions-of-titanium-sdk/35861872
+
+Get the SDK titanium list>
+The easiest way, via CLI (command line interface).
+in CLI after installing titanium, type following in CMD 
+
+appc ti sdk list
+appc ti sdk install 7.0.1.GA 
+
+Installed Android SDKs
+8.0, 7.0, 6.0, 4.4.2, 4.1.2, 4.0, 3.0
+Not sure which one is required. but i have all installed
+
+---------------------
+Android Studio version
+3.0
+
+Android Virtual Device
+Pixel 5.0 1080x1920 xxhdpi
+Marshmellow Android 6.0 x86
+
+
