@@ -1,0 +1,17 @@
+0000000000000000000000000000000000000000 c648c5181eebb6598982b752ceef3ef86a73fd3b Kasun De Silva <kasun.desilva@auxenta.com> 1462188769 +0530	branch: Created from master
+c648c5181eebb6598982b752ceef3ef86a73fd3b dfd3151ff90ae3150c822afcbb909f0d1b0a6bcd Kasun De Silva <kasun.desilva@auxenta.com> 1462489627 +0530	commit: theam added
+dfd3151ff90ae3150c822afcbb909f0d1b0a6bcd ced16a23a2f76442162b5b22ea5bb17b9dd2924f Kasun De Silva <kasun.desilva@auxenta.com> 1462512658 +0530	commit: Category duplicate issue fixed.
+ced16a23a2f76442162b5b22ea5bb17b9dd2924f 118cca221b90d8123065bdaff8542fc410d86664 Kasun De Silva <kasun.desilva@auxenta.com> 1462526469 +0530	commit: Vat required field added.
+118cca221b90d8123065bdaff8542fc410d86664 74a7559c6c11094ff1d2c72083960664c0652603 Kasun De Silva <kasun.desilva@auxenta.com> 1462530860 +0530	commit: duplicate issues fixed.
+74a7559c6c11094ff1d2c72083960664c0652603 af041e82ca8906e0ebf689b9f98ccdd02a9d8f1e Kasun De Silva <kasun.desilva@auxenta.com> 1462537047 +0530	commit: erroes fixed,
+af041e82ca8906e0ebf689b9f98ccdd02a9d8f1e 148cf71c034e6355d78b53176a835c626f0fc0e3 Kasun De Silva <kasun.desilva@auxenta.com> 1462543486 +0530	commit: vat added
+148cf71c034e6355d78b53176a835c626f0fc0e3 2384d245e0f252440f6c9adddbb1ad4edeb37631 Kasun De Silva <kasun.desilva@auxenta.com> 1462551295 +0530	commit: vat option added
+2384d245e0f252440f6c9adddbb1ad4edeb37631 38aff96e1f05266bd9b2c17df4cf8a431fae7cf9 Kasun De Silva <kasun.desilva@auxenta.com> 1462554373 +0530	commit: list view option added.
+38aff96e1f05266bd9b2c17df4cf8a431fae7cf9 53fd12d63d699041d236ee7720c8e230e6780055 Kasun De Silva <kasun.desilva@auxenta.com> 1462758612 +0530	commit: popover added.
+53fd12d63d699041d236ee7720c8e230e6780055 d476f47ad0a6b3ebe243f370f6f352391ee59070 Kasun De Silva <kasun.desilva@auxenta.com> 1462760211 +0530	commit: minus function added.
+d476f47ad0a6b3ebe243f370f6f352391ee59070 cd4f06013426b9a47c4ff7d6090ff07172e1fa78 Kasun De Silva <kasun.desilva@auxenta.com> 1463227646 +0530	commit: tamplate added.
+cd4f06013426b9a47c4ff7d6090ff07172e1fa78 ceec592e41983e0e32e235f0bd6ec946a4322a43 Kasun De Silva <kasun.desilva@auxenta.com> 1463231570 +0530	commit: selection error fixed.
+ceec592e41983e0e32e235f0bd6ec946a4322a43 138d63e308aa51fea17facf46dfa8133bed5dd1e Kasun De Silva <kasun.desilva@auxenta.com> 1463288740 +0530	commit: vat field hide isse fixed
+138d63e308aa51fea17facf46dfa8133bed5dd1e a8ae7caad64df78348c983cfd9d8f9ebdcda2f50 Kasun De Silva <kasun.desilva@auxenta.com> 1463363381 +0530	commit: back button issue fixed
+a8ae7caad64df78348c983cfd9d8f9ebdcda2f50 8f0542c091bf8b901a4f4f256f223aefc1e88ac6 Kasun De Silva <kasun.desilva@auxenta.com> 1463364957 +0530	commit: camera issue fixed.
+8f0542c091bf8b901a4f4f256f223aefc1e88ac6 435fd4bc7a189c1ed1524aa1ffa629e0516ac234 Kasun De Silva <kasun.desilva@auxenta.com> 1468859542 +0530	commit: alert removed

@@ -1,0 +1,7 @@
+Place your change log text here.  This file will be incorporated with your app at package time.
+
+----change log---------------------
+
+1. added platform folder for full screen configurations.
+2. added fonts folder(Resources\android\).
+3. added 4 images (Resources\android\images).
