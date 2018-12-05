@@ -1,7 +1,7 @@
 Axway Appcelerator Studio version:
 build: 5.1.1.201809051655
 
-Titanium APK 7.0.1.GA 
+Titanium APK 7.0.1.GA (default installation is 7.5. but does not work with the MyWallet App)
 how to install?
 https://stackoverflow.com/questions/35859948/download-previous-versions-of-titanium-sdk/35861872
 
