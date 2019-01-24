@@ -1,5 +1,6 @@
 exports.settingView = function(){
 	// Function List
+	var deviceHeight = Ti.Platform.displayCaps.platformHeight;
 	
 	function loadProjectList(){
 		var sql = 'SELECT * FROM tbl_project WHERE enable=1 ORDER BY project_name COLLATE NOCASE ASC';
@@ -3418,7 +3419,8 @@ btnSaveCustomer.addEventListener('click', function(){
 	var newField = inptpopupCustomer.value;
 	// New Insert
 	if(temp_cat_id_holder.text == ''){
-		db.execute('INSERT INTO tbl_customer (full_name, enable) VALUES ("'+newField+'",1)');
+		//db.execute('INSERT INTO tbl_customer (full_name, enable) VALUES ("'+newField+'",1)');
+		db.execute('INSERT INTO tbl_customer(full_name, enable) VALUES(?,?)', newField, 1);
 		var toast = Ti.UI.createNotification({
 			message:"Save Successful",
 			duration: Ti.UI.NOTIFICATION_DURATION_SHORT
@@ -5014,6 +5016,7 @@ return settingsView;
 };
 
 exports.AccountListView = function() {
+	var deviceHeight = Ti.Platform.displayCaps.platformHeight;
 	
 	var AccountListMainView = Ti.UI.createView({
 		height: '100%', width: '100%',
