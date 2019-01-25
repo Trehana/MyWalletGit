@@ -3420,7 +3420,7 @@ btnSaveCustomer.addEventListener('click', function(){
 	// New Insert
 	if(temp_cat_id_holder.text == ''){
 		//db.execute('INSERT INTO tbl_customer (full_name, enable) VALUES ("'+newField+'",1)');
-		db.execute('INSERT INTO tbl_customer(full_name, enable) VALUES(?,?)', newField, 1);
+		db.execute('INSERT INTO tbl_customer(full_name, enable) VALUES(?,?)', newField, "1");
 		var toast = Ti.UI.createNotification({
 			message:"Save Successful",
 			duration: Ti.UI.NOTIFICATION_DURATION_SHORT
