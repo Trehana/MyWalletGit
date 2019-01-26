@@ -3,7 +3,7 @@ var adhocIncomeTableId = Ti.UI.createTextField({
 	visible : false,
 });
 var adhocIncomeTitle = Ti.UI.createTextField({
-	value : 'Add Bank Receipts',
+	value : 'Add Bank Receipt',
 	visible : false,
 });
 var adhocIncomeEntryDate = Ti.UI.createTextField({
@@ -158,14 +158,19 @@ var bellowTaxElements = [];
 
 exports.addIncome = function() {
 
+	var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+	
 	//# Required Files
 
 	var calcultor = require('calculator');
 	var view_calculator = calcultor.calculatorView();
 
+	
 	//# End of Required Files
 
 	//# Primary Functions
+
+	//getCustomerData();
 
 	function clearIncomeForm(){
 		
@@ -950,6 +955,7 @@ exports.addIncome = function() {
 	}
 	
 	function getCustomerData() {
+		console.log("a1");
 		var db = Ti.Database.open('mywallet');
 		var getTableCustomerData = db.execute('SELECT id,full_name FROM tbl_customer WHERE enable = "1" ORDER BY full_name');
 
@@ -1124,7 +1130,8 @@ exports.addIncome = function() {
 	});
 
 	var lbl_entryDate = Ti.UI.createLabel({
-		text : 'Entry Date *',
+		//text : 'Entry Date *',
+		text : 'Date *',
 		color : '#000',
 		top : 5,
 		left : '2%',
@@ -1887,6 +1894,65 @@ exports.addIncome = function() {
 
 	//##
 
+
+
+// //
+
+
+
+// 	var pkr_accountPicker = Ti.UI.createPicker({
+// 		top : 5,
+// 		left : '41%',
+// 		width : '57%',
+// 		height : 40,
+// 		backgroundColor : '#A0A0A0',
+// 	});
+
+// 	var getAccountData = db.execute('SELECT * FROM tbl_account WHERE enable = 1');
+
+// 	var arr_accountData = [];
+
+// 	var i = 1;
+
+// 	arr_accountData[0] = Ti.UI.createPickerRow({
+// 		id : '0',
+// 		title : 'Please Select',
+// 		isDefault : null
+// 	});
+
+// 	while (getAccountData.isValidRow()) {
+// 		arr_accountData[i] = Ti.UI.createPickerRow({
+// 			id : getAccountData.fieldByName('id'),
+// 			title : getAccountData.fieldByName('account_name'),
+// 			isDefault : getAccountData.fieldByName('is_default')
+// 		});
+
+// 		getAccountData.next();
+// 		i++;
+// 	}
+
+// 	getAccountData.close();
+
+// 	pkr_accountPicker.selectionIndicator = true;
+// 	pkr_accountPicker.add(arr_accountData);
+
+// 	var defaultAccountValueRow = null;
+
+// 	for (var i = 0; i < arr_accountData.length; i++) {
+// 		if (arr_accountData[i].isDefault === 1) {
+// 			defaultAccountValueRow = arr_accountData[i].id;
+// 		}
+// 	}
+
+// 	view_accountPicker.add(lbl_accountPicker);
+// 	view_accountPicker.add(pkr_accountPicker);
+
+// 	view_mainContainerInnerView.add(view_accountPicker);
+
+// 	//
+
+
+
 	//
 
 	var view_customerName = Ti.UI.createView({
@@ -1913,6 +1979,45 @@ exports.addIncome = function() {
 		visible : false,
 	});
 
+	var getCustomerData1 = db.execute('SELECT full_name FROM tbl_customer WHERE enable = "1" ORDER BY full_name');
+	var arr_customerNameData = [];
+
+	var i = 1;
+
+	arr_customerNameData[0] = Ti.UI.createPickerRow({
+		id : '0',
+		title : 'Please Select',
+		isDefault : null
+	});
+
+	while (getCustomerData1.isValidRow()) {
+		arr_customerNameData[i] = Ti.UI.createPickerRow({
+			id : getCustomerData1.fieldByName('id'),
+			title : getCustomerData1.fieldByName('full_name'),
+			isDefault : getCustomerData1.fieldByName('is_default')
+
+
+		});
+		console.log(getCustomerData1.fieldByName('full_name'));
+		getCustomerData1.next();
+		i++;
+	}
+
+	getCustomerData1.close();
+
+	pkr_customerName.selectionIndicator = true;
+	pkr_customerName.add(arr_customerNameData);
+
+	var defaultAccountValueRow = null;
+
+	for (var i = 0; i < arr_customerNameData.length; i++) {
+		if (arr_customerNameData[i].isDefault === 1) {
+			defaultAccountValueRow = arr_customerNameData[i].id;
+		}
+	}
+
+
+
 	var btnaddCustomer = Ti.UI.createView({
 		//type:Ti.UI.PICKER_TYPE_DATE,
 		backgroundColor : '#A0A0A0',
@@ -1931,12 +2036,12 @@ exports.addIncome = function() {
 	});
 	btnaddCustomer.add(imgaddCustomer);
 
-	var arr_customerNameData = [];
+	
 
-	arr_customerNameData = getCustomerInvoiceDtails();
+	//arr_customerNameData = getCustomerInvoiceDtails();
 
-	pkr_customerName.selectionIndicator = true;
-	pkr_customerName.add(arr_customerNameData);
+	//pkr_customerName.selectionIndicator = true;
+	//pkr_customerName.add(arr_customerNameData);
 
 	var pkr_customerNameUpdate = Ti.UI.createTextField({
 		backgroundColor : userInputFeildBackgroundColor,
