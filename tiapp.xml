@@ -11,7 +11,7 @@
     <fullscreen>true</fullscreen>
     <navbar-hidden>true</navbar-hidden>
     <analytics>true</analytics>
-    <guid>573480cb-4fc4-4595-9444-f72b7005f237</guid>
+    <guid>10fbb696-9655-4f63-9333-1dbb032f8e3f</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
     <ios>
         <plist>
@@ -48,7 +48,7 @@
                 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
                 <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"/>
             </application>
-            <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="23"/>
+            <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="28"/>
         </manifest>
     </android>
     <mobileweb>
@@ -65,8 +65,9 @@
         <target device="iphone">true</target>
         <target device="ipad">false</target>
         <target device="android">true</target>
-        <target device="mobileweb">false</target>
+        <!--<target device="mobileweb">false</target> -->
     </deployment-targets>
-    <sdk-version>7.0.1.GA</sdk-version>
+    <!--<sdk-version>3.2.3.GA</sdk-version>-->
+    <sdk-version>7.5.0.GA</sdk-version>
     <property name="appc-app-id" type="string">5a61c1e222b1c742f095bb12</property>
 </ti:app>
