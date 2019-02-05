@@ -44,6 +44,9 @@ if (ex_height > ex_width) {
 } else {
 	var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
 }
+
+//deviceHeight = Ti.Platform.displayCaps.platformHeight;
+
 var appPixel = deviceHeight / 100;
 
 var settingOptionHeight = deviceHeight * 0.925 * 0.094;

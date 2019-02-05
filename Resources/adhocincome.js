@@ -69,6 +69,18 @@ exports.Adhocincome = function() {
 
 	var calcultor = require('calculator');
 	var calView = calcultor.calculatorView();
+	
+	//var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+
+	var logicalDesityFactor = Ti.Platform.displayCaps.logicalDensityFactor * 1;
+
+	var ex_height = Titanium.Platform.displayCaps.platformHeight * 1;
+	var ex_width = Ti.Platform.displayCaps.platformWidth * 1;
+	if (ex_height > ex_width) {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformHeight * 1) / logicalDesityFactor);
+	} else {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
+	}
 
 	function saveAdhocIncomeData(dbData) {
 		var db = Ti.Database.open('mywallet');
@@ -463,7 +475,8 @@ exports.Adhocincome = function() {
 	});
 
 	var entryDateLabel = Ti.UI.createLabel({
-		text : 'Entry Date *',
+		//text : 'Entry Date *',
+		text : 'Date *',
 		color : '#000',
 		top : 5,
 		left : '2%',

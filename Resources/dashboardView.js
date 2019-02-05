@@ -1,5 +1,19 @@
 exports.dashboardWindow = function() {
 
+	//var deviceHeight=1920;
+	//var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+	//console.log("device height: " + deviceHeight);
+
+	var logicalDesityFactor = Ti.Platform.displayCaps.logicalDensityFactor * 1;
+
+	var ex_height = Titanium.Platform.displayCaps.platformHeight * 1;
+	var ex_width = Ti.Platform.displayCaps.platformWidth * 1;
+	if (ex_height > ex_width) {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformHeight * 1) / logicalDesityFactor);
+	} else {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
+	}
+	
 	var win = Ti.UI.createWindow({
 		//backgroundColor : '#EEEEEE',
 		//backgroundColor : '#F00',
@@ -14,8 +28,10 @@ exports.dashboardWindow = function() {
 		},
 	});
 
-	var scrollview = Ti.UI.createView({
+	//var scrollview = Ti.UI.createView({
+	var scrollview = Ti.UI.createScrollView({
 		height : '100%',
+		//height : deviceHeight,
 		width : '100%',
 		layout : 'vertical',
 		width : stylefullwidth,
@@ -26,6 +42,7 @@ exports.dashboardWindow = function() {
 
 	var view_1 = Ti.UI.createView({
 		height : deviceHeight * 0.075,
+		//height : deviceHeight * 0.025,
 		backgroundColor : '#2980B9',
 	});
 
@@ -67,7 +84,8 @@ exports.dashboardWindow = function() {
 	scrollview.add(view_2);
 
 	var view_3 = Ti.UI.createView({
-		height : deviceHeight * 0.35,
+		//height : deviceHeight * 0.35,
+		height : deviceHeight * 0.45,
 		backgroundColor : '#eeeeee',
 	});
 
@@ -210,12 +228,14 @@ exports.dashboardWindow = function() {
 
 	view_btnset2.add(btn_dashboard_addincome);
 	view_btnset2.add(btn_dashboard_createaccount);
+	
 	view_3.add(view_btnset1);
 	view_3.add(view_btnset2);
 	scrollview.add(view_3);
 
 	var view_4 = Ti.UI.createView({
-		height : deviceHeight * 0.45, // **********
+		//height : deviceHeight * 0.45, // **********
+		height : deviceHeight * 0.3, // **********
 		backgroundColor : '#eeeeee',
 		layout : 'vertical',
 	});
@@ -226,7 +246,7 @@ exports.dashboardWindow = function() {
 		left : stylemargine,
 		right : stylemargine,
 		top : '1%',
-		height : '17%',
+		height : '9%',
 	});
 
 	var lblviewentries = Ti.UI.createLabel({
@@ -259,8 +279,9 @@ exports.dashboardWindow = function() {
 		backgroundSelectedColor : '#2980B9',
 		left : stylemargine,
 		right : stylemargine,
-		top : '3%',
-		height : '17%',
+		top : '1%',
+		//height : '9%',
+		height : '20%',
 	});
 
 	var lbleditdeleteentries = Ti.UI.createLabel({
@@ -294,8 +315,9 @@ exports.dashboardWindow = function() {
 		backgroundSelectedColor : '#2980B9',
 		left : stylemargine,
 		right : stylemargine,
-		top : '3%',
-		height : '17%',
+		top : '1%',
+		//height : '9%',
+		height : '20%',
 	});
 
 	var lblDeletereports = Ti.UI.createLabel({
@@ -329,8 +351,9 @@ exports.dashboardWindow = function() {
 		backgroundSelectedColor : '#2980B9',
 		left : stylemargine,
 		right : stylemargine,
-		top : '3%',
-		height : '17%',
+		top : '1%',
+		//height : '9%',
+		height : '20%',
 	});
 
 	var lblaccessreports = Ti.UI.createLabel({
@@ -374,9 +397,10 @@ exports.dashboardWindow = function() {
 		backgroundSelectedColor : '#2980B9',
 		left : stylemargine,
 		right : stylemargine,
-		top : '3%',
+		top : '1%',
 		//bottom : '3%',
-		height : '17%',
+		//height : '9%',
+		height : '20%',
 	});
 
 	var lblsummerytotals = Ti.UI.createLabel({
@@ -413,7 +437,7 @@ exports.dashboardWindow = function() {
 	scrollview.add(view_4);
 
 	var view_5 = Ti.UI.createView({
-		height : deviceHeight * 0.075, // **************
+		height : deviceHeight * 0.1, // **************
 		backgroundColor : '#054e62',
 	});
 

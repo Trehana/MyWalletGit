@@ -42,6 +42,18 @@ var oauth = function(consumerKey, consumerSecret) {
  * DROPBOX CLIENT CODE
  */
 exports.createClient = function(config) {
+	
+	//var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+
+	var logicalDesityFactor = Ti.Platform.displayCaps.logicalDensityFactor * 1;
+
+	var ex_height = Titanium.Platform.displayCaps.platformHeight * 1;
+	var ex_width = Ti.Platform.displayCaps.platformWidth * 1;
+	if (ex_height > ex_width) {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformHeight * 1) / logicalDesityFactor);
+	} else {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
+	}
 
 	var sign = oauth(config.app_key, config.app_secret);
 	var root = config.root || "sandbox";

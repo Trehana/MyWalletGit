@@ -63,7 +63,25 @@ var isManualVAT = false;
 
 var isVATApply = 0;
 var bellowTaxElements = [];
+
+
+
 exports.createinvoiceRecord = function(isCreditNote, btnSource) {
+	
+	//var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+
+	console.log('start.......');
+
+	var logicalDesityFactor = Ti.Platform.displayCaps.logicalDensityFactor * 1;
+
+	var ex_height = Titanium.Platform.displayCaps.platformHeight * 1;
+	var ex_width = Ti.Platform.displayCaps.platformWidth * 1;
+	if (ex_height > ex_width) {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformHeight * 1) / logicalDesityFactor);
+	} else {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
+	}
+	
 	//Ti.API.info('POP 5 : ' + isManualVAT);
 	//Ti.API.info('is Credit Note xxx : ' + isCreditNote);
 	var btnAction = btnSource;
@@ -413,9 +431,11 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		lastInvNumText.value = getInvoiceNumber();
 		//invoiceNumberText.value = getInvoiceNumber();
 		invoiceNumberText.value = '';
-		invoiceNetText.value = '0.00';
+		//invoiceNetText.value = '0.00';
+		invoiceNetText.value = '';
 		vatText.value = '';
-		invoiceTotalText.value = '';
+		//invoiceTotalText.value = '';
+		invoiceTotalText.value = '0.00';
 		
 		selectCustomerText.setSelectedRow(0, 0, false);
 		noteText.value = '';
@@ -564,8 +584,10 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		//Ti.API.info(invoiceNumberText.value);
 		var invNumber = invoiceNumberText.value;
 		var resultSet = db.execute('SELECT COUNT(*) AS numberofinvoices FROM tbl_invoice WHERE invoice_no = "' + invNumber + '"');
-		var invoiceNet = invoiceNetText.value;
-		invoiceNet = invoiceNet.replace(/,/g, '');
+		//var invoiceNet = invoiceNetText.value;
+		var totalValue = invoiceTotalText.value;
+		//invoiceNet = invoiceNet.replace(/,/g, '');
+		totalValue = totalValue.replace(/,/g, '');
 		Ti.API.info('Number of records : ' + resultSet.fieldByName('numberofinvoices'));
 		if (invDateText.value == '') {
 			var dialog1 = Ti.UI.createAlertDialog({
@@ -595,14 +617,28 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 				ok : 'OK',
 			});
 			dialog3.show();
-		} else if (invoiceNetText.value == '0.00') {
+		// } else if (invoiceNetText.value == '0.00') {
+		// 	var dialog4 = Ti.UI.createAlertDialog({
+		// 		title : 'Error!',
+		// 		message : 'Please Add Net Amount',
+		// 		ok : 'Ok',
+		// 	});
+		// 	dialog4.show();
+		} else if (invoiceTotalText.value == '0.00') {
 			var dialog4 = Ti.UI.createAlertDialog({
 				title : 'Error!',
-				message : 'Please Add Net Amount',
+				message : 'Please Add Total Amount',
 				ok : 'Ok',
 			});
 			dialog4.show();
-		} else if (!floatRex.test(invoiceNet)) {
+		// } else if (!floatRex.test(invoiceNet)) {
+		// 	var dialog5 = Ti.UI.createAlertDialog({
+		// 		title : 'Error!',
+		// 		message : 'Net Amount is Invalid',
+		// 		ok : 'Ok',
+		// 	});
+		// 	dialog5.show();
+		} else if (!floatRex.test(totalValue)) {
 			var dialog5 = Ti.UI.createAlertDialog({
 				title : 'Error!',
 				message : 'Net Amount is Invalid',
@@ -665,6 +701,7 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		db.close();
 	}
 
+	console.log('start.......11111');
 	var createinvoicepopupcontainerView = Ti.UI.createView({// Set height appropriately
 		//layout : 'vertical',
 		visible : false,
@@ -822,6 +859,8 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 	vatRequiredOption.add(vatOpt);
 	vatRequiredOption.selectionIndicator = true;
 
+	console.log('start.......22222');
+
 	function moveUP(element) {
 		element.top = element.top - 45;
 	}
@@ -859,23 +898,29 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		setVATApplication(isVATApply);
 		var vatVal = invoiceVATPresent.value;
 		vatLabel.text = 'VAT ' + vatVal + '% ' + '(' + currencyType + ')';
-		var invoiceNet = invoiceNetText.value;
-		invoiceNet = invoiceNet.replace(/,/g, '');
+		//var invoiceNet = invoiceNetText.value;
+		var totalValue = invoiceTotalText.value;
+		//invoiceNet = invoiceNet.replace(/,/g, '');
+		totalValue = totalValue.replace(/,/g, '');
 		tempVatText.value = vatVal;
 		var invoiceVat;
 		if(!isManualVAT){
-			invoiceVat = (invoiceNet * vatVal) / 100;
+			//invoiceVat = (invoiceNet * vatVal) / 100;
+			invoiceVat =(totalValue * vatVal)/(100+parseFloat( vatVal));
 			vatText.value = toDecimalFormatWithoutCurrency(invoiceVat);
 		} else {
 			vatLabel.text = 'VAT Amount ' + '(' + currencyType + ')';
 		}
 		var vat = vatText.value;
 		vat = vat.replace(/,/g, '');
-		var totalValue = invoiceNet * 1 + vat * 1;
+		//var totalValue = invoiceNet * 1 + vat * 1;
+		var invoiceNet = totalValue * 1 - vat * 1;
 		if(isVATApply == 0){
-			totalValue = invoiceNet * 1;
+			//totalValue = invoiceNet * 1;
+			invoiceNet = totalValue * 1;
 		}
-		invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+		//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+		invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
 	}
 
 	vatRequiredOption.addEventListener('change', function(e) {
@@ -883,23 +928,29 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		setVATApplication(isVATApply);
 		var vatVal = vatPtg();
 		vatLabel.text = 'VAT ' + vatVal + '% ' + '(' + currencyType + ')';
-		var invoiceNet = invoiceNetText.value;
-		invoiceNet = invoiceNet.replace(/,/g, '');
+		//var invoiceNet = invoiceNetText.value;
+		var totalValue = invoiceTotalText.value;
+		//invoiceNet = invoiceNet.replace(/,/g, '');
+		totalValue = totalValue.replace(/,/g, '');
 		tempVatText.value = vatVal;
 		var invoiceVat;
 		if(!isManualVAT){
-			invoiceVat = (invoiceNet * vatVal) / 100;
+			//invoiceVat = (invoiceNet * vatVal) / 100;
+			invoiceVat =(totalValue * vatVal)/(100+parseFloat( vatVal));
 			vatText.value = toDecimalFormatWithoutCurrency(invoiceVat);
 		} else {
 			vatLabel.text = 'VAT Amount ' + '(' + currencyType + ')';
 		}
 		var vat = vatText.value;
 		vat = vat.replace(/,/g, '');
-		var totalValue = invoiceNet * 1 + vat * 1;
+		//var totalValue = invoiceNet * 1 + vat * 1;
+		var invoiceNet = totalValue * 1 - vat * 1;
 		if(isVATApply == 0){
-			totalValue = invoiceNet * 1;
+			//totalValue = invoiceNet * 1;
+			invoiceNet = totalValue * 1;
 		}
-		invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+		//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+		invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
 	});
 
 	
@@ -997,34 +1048,40 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		image : '/images/add.png',
 	});
 	btnaddCustomer.add(imgaddCustomer);
+///---total
+var invoiceTotalLabel = Ti.UI.createLabel({
+	text : 'Invoice Total  (' + currencyType + ')',
+	color : '#000',
+	//top : 330,
+	top : 240,
+	left : '2%',
+	width : '37%',
+	height : 40,
 
-	var invoiceNetLabel = Ti.UI.createLabel({
-		text : 'Invoice Net (' + currencyType + ') *',
-		color : '#000',
-		top : 240,
-		left : '2%',
-		width : '37%',
-		height : 40,
+});
+//bellowTaxElements.push(invoiceTotalLabel);
+console.log("start.....4444");
+var invoiceTotalText = Ti.UI.createTextField({
+	borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	backgroundColor : '#A0A0A0',
+	//top : 330,
+	top : 240,
+	left : '41%',
+	//width : '57%',
+	width : '43%',
+	height : 40,
+	//editable : false,
+	editable : true,
+	keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+	value : toDecimalFormatWithoutCurrency(invoiceInvoiceTotal.value * 1),
 
-	});
-
-	var invoiceNetText = Ti.UI.createTextField({
-		//borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		//keyboardType : Titanium.UI.KEYBOARD_NUMBER_PAD,
-		backgroundColor : '#A0A0A0',
-		top : 240,
-		left : '41%',
-		width : '43%',
-		height : 40,
-		//focusable : true,
-		editable : true,
-		keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
-		value : toDecimalFormatWithoutCurrency(invoiceNet.value * 1),
-	});
-
+	
+});
+///--total---
 	var editIncPayAmntBtn = Ti.UI.createView({
 		backgroundColor : '#A0A0A0',
 		top : 240,
+
 		left : '86%',
 		width : '12%',
 		height : 40,
@@ -1041,11 +1098,14 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 	editIncPayAmntBtn.add(imgeditIncPayImg);
 
 	editIncPayAmntBtn.addEventListener('singletap', function() {
-		calcultor.setTxtObj(invoiceNetText);
+		//calcultor.setTxtObj(invoiceNetText);
+		//calcultor.setTxtObj(invoiceTotalText);
+		calcultor.setTxtObj_createInvoice(invoiceTotalText);
+		
 		calView.show();
 	});
 
-
+	console.log('start.......333333');
 
 	var vatLabel = Ti.UI.createLabel({
 		//text:'VAT '+vatPtg()+'% ('+currencyType+')',
@@ -1058,7 +1118,9 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 	});
 
 	if (invoiceInvoiceOpt.value == 'New') {
+		console.log('start.......B1111');
 		vatLabel.text = 'VAT ' + vatPtg() + '%  (' + currencyType + ')';
+		console.log('start.......B22222');
 	} else {
 		vatLabel.text = 'VAT ' + invoiceVATPresent.value + '%  (' + currencyType + ')';
 	}
@@ -1100,14 +1162,21 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 	});
 	changeVatBtn.add(imgchangeVat);
 
+	console.log('start.......B33333');
 	if (invoiceInvoiceOpt.value == 'New') {
 		selectCustomerText.visible = true;
-		invoiceNetText.addEventListener('singletap', function() {
-			//Ti.API.info('Btn Clicked');
-			calcultor.setTxtObj(invoiceNetText);
-			calView.show();
-		});
+		// invoiceNetText.addEventListener('singletap', function() {
+		// //invoiceTotalText.addEventListener('singletap', function() {
+		// 	//Ti.API.info('Btn Clicked');
+		// 	//calcultor.setTxtObj(invoiceNetText);
+		// 	console.log('start.......B4444');
+		// 	//calcultor.setTxtObj(invoiceTotalText);
+		// 	calcultor.setTxtObj_createInvoice(invoiceTotalText);
+			
+		// 	calView.show();
+		// });
 	} else {
+		console.log('start.......B5555');
 		var getInvoiceData = db.execute('SELECT count(id) as invoicecount FROM tbl_income WHERE invoice_no="' + invoiceNumber.value + '"');
 		var getPaidInvoiceCount = getInvoiceData.fieldByName('invoicecount');
 		if (getPaidInvoiceCount > 0) {
@@ -1126,14 +1195,18 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 			imgaddCustomer.visible = true;
 			changeVatBtnUpdate.visible = true;
 			changeVatBtnUpdate.value = toDecimalFormatWithoutCurrency(invoiceVAT.value * 1);
-			invoiceNetText.editable = true;
+			//invoiceNetText.editable = true;
+			invoiceTotalText.editable = true;
 		} else {
 			selectCustomerText.visible = true;
-			invoiceNetText.addEventListener('singletap', function() {
-				//Ti.API.info('Btn Clicked');
-				calcultor.setTxtObj(invoiceNetText);
-				calView.show();
-			});
+			// invoiceNetText.addEventListener('singletap', function() {
+			// //invoiceTotalText.addEventListener('singletap', function() {
+			// 	//Ti.API.info('Btn Clicked');
+			// 	//calcultor.setTxtObj(invoiceNetText);
+			// 	//calcultor.setTxtObj(invoiceTotalText);
+			// 	calcultor.setTxtObj_createInvoice(invoiceTotalText);
+			// 	calView.show();
+			// });
 		}
 
 	}
@@ -1151,29 +1224,38 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 	} else {
 		tempVatText.value = invoiceVATPresent.value;
 	}
+	/////------net
 
-	var invoiceTotalLabel = Ti.UI.createLabel({
-		text : 'Invoice Total  (' + currencyType + ')',
+
+	var invoiceNetLabel = Ti.UI.createLabel({
+		text : 'Invoice Net (' + currencyType + ') *',
 		color : '#000',
+		//top : 240,
 		top : 330,
 		left : '2%',
 		width : '37%',
 		height : 40,
 
 	});
-	bellowTaxElements.push(invoiceTotalLabel);
+	bellowTaxElements.push(invoiceNetLabel);
 
-	var invoiceTotalText = Ti.UI.createTextField({
-		borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	var invoiceNetText = Ti.UI.createTextField({
+		//borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		//keyboardType : Titanium.UI.KEYBOARD_NUMBER_PAD,
 		backgroundColor : '#A0A0A0',
+		//top : 240,
 		top : 330,
 		left : '41%',
+		//width : '43%',
 		width : '57%',
 		height : 40,
+		//focusable : true,
 		editable : false,
-		value : toDecimalFormatWithoutCurrency(invoiceInvoiceTotal.value * 1),
+		keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD,
+		value : toDecimalFormatWithoutCurrency(invoiceNet.value * 1),
 	});
-	bellowTaxElements.push(invoiceTotalText);
+	///-----net---
+	bellowTaxElements.push(invoiceNetText);
 
 	var categoryLabel = Ti.UI.createLabel({
 		text : 'Category',
@@ -1350,7 +1432,7 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		invDateLabel.text = 'Invoice Date *';
 		invoiceNumberLabel.text = 'Invoice Number *';
 	}
-	
+	console.log('start.......A2222222');
 	bellowTaxElements.push(noteText);
 	createinvoicepopupinputview.add(lastInvNumLabel);
 	createinvoicepopupinputview.add(lastInvNumText);
@@ -1425,7 +1507,7 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 			fontFamily : customFont1
 		},
 	});
-
+	console.log('start.......A333333');
 	var saveBtn = Ti.UI.createButton({
 		title : 'Save',
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -1476,6 +1558,8 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		height : '100%',
 	});
 	
+	
+	console.log('start.......A44444');
 	function enableUpdate(){
 		try{
 			createinvoicepopupinputview.remove(disableLayer);
@@ -1549,7 +1633,7 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 			//fontFamily : customFont2,
 		},
 	});
-
+	console.log('start.......A55555');
 	var imageCreateCategorypopupclose = Ti.UI.createImageView({
 		image : '/images/closebtn.png',
 		backgroundSelectedColor : '#999999',
@@ -1641,6 +1725,7 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		//mainAdhocView.scrollingEnabled = true;
 	});
 
+	console.log('start.......A6666');
 	btnCreateCategory.addEventListener('click', function(e) {
 
 		if (createCategoryText.value != '') {
@@ -2118,11 +2203,12 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
     vw_RadioImageRight.addEventListener('singletap', function(e) {
         switchActiveButton(vw_InnerRight.id);
     });
-    
+	
+	console.log("start.....5555");
     vw_RadioImageLeft.addEventListener('singletap', function(e) {
         switchActiveButton(vw_InnerLeft.id);
     });
-    
+    console.log("start.....6666");
     function switchActiveButton(ButtonID){
     	if(ButtonID === vw_InnerLeft.id){
     		vw_RadioImageLeft.backgroundImage = RadioButtonSelectedImage;
@@ -2134,7 +2220,7 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
     		isManualVAT = true;
     	}	
     }
-    	
+    console.log("start.....7777");
 	//#
 
 	invoiceTextView.add(invoiceText);
@@ -2242,24 +2328,32 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 				}*/
 				
 				vatLabel.text = 'VAT Amount ' + '(' + currencyType + ')';
-				var invoiceNet = invoiceNetText.value;
+				//var invoiceNet = invoiceNetText.value;
+				var totalValue=invoiceTotalText.value;
 				vatText.value = toDecimalFormatWithoutCurrency(vatVal);
-				var totalValue = invoiceNet * 1 + vatVal * 1;
-				invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+				//var totalValue = invoiceNet * 1 + vatVal * 1;
+				var invoiceNet=totalValue * 1 - vatVal *1;
+				//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+				invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
 				
 			} else {
 				if (vatVal <= '100') {
 					vatPtg(vatVal);
 					vatLabel.text = 'VAT ' + vatVal + '% ' + '(' + currencyType + ')';
-					var invoiceNet = invoiceNetText.value;
-					invoiceNet = invoiceNet.replace(/,/g, '');
+					//var invoiceNet = invoiceNetText.value;
+					var totalValue=invoiceTotalText.value;
+					//invoiceNet = invoiceNet.replace(/,/g, '');
+					totalValue = totalValue.replace(/,/g, '');
 					tempVatText.value = vatVal;
-					var invoiceVat = (invoiceNet * vatVal) / 100;
+					//var invoiceVat = (invoiceNet * vatVal) / 100;
+					var invoiceVat =(totalValue * vatVal)/(100+parseFloat( vatVal));
 					vatText.value = toDecimalFormatWithoutCurrency(invoiceVat);
 					var vat = vatText.value;
 					vat = vat.replace(/,/g, '');
-					var totalValue = invoiceNet * 1 + vat * 1;
-					invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+					//var totalValue = invoiceNet * 1 + vat * 1;
+					var invoiceNet=totalValue * 1 - vat * 1;
+					//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+					invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
 				} else {
 					alert('Please Add Number Below to 100%');
 					createInvoiceVatWrapperView.show();
@@ -2480,33 +2574,107 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 		}
 		
 	});
-	invoiceNetText.addEventListener('change', function() {
-		var invoiceNet = invoiceNetText.value;
-			invoiceNet = invoiceNet.replace(/,/g, '');
-			var tempVatvals = tempVatText.value;
+	// invoiceNetText.addEventListener('change', function() {
+	// 	var invoiceNet = invoiceNetText.value;
+	// 		invoiceNet = invoiceNet.replace(/,/g, '');
+	// 		var tempVatvals = tempVatText.value;
+	// 		var invoiceVat;
+	// 		if(!isManualVAT){
+	// 			invoiceVat = (invoiceNet * vatPtg(tempVatvals)) / 100;
+	// 			vatText.value = toDecimalFormatWithoutCurrency(invoiceVat);
+	// 		}
+	// 		var vat = vatText.value;
+	// 		vat = vat.replace(/,/g, '');
+	// 		var totalValue = invoiceNet * 1 + vat * 1;
+			
+	// 		if(isVATApply == 0){
+	// 			totalValue = invoiceNet * 1;
+	// 		}		
+			
+	// 		invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+	// });
+
+	exports.calcreturn = function(){
+		// if(obj.value == undefined || obj.value =='' ){
+		// 	calValue.value = 0;
+		// }else{
+		// 	var txtValue = obj.value;
+	 //    console.log('text value '+obj.name);
+		// 	calValue.value = txtValue.replace(/,/g, '');
+		//}
+	
+		console.log("return from calc");
+	
+		//var invoiceNet = invoiceNetText.value;
+		var totalValue=invoiceTotalText.value;
+			//invoiceNet = invoiceNet.replace(/,/g, '');
+			totalValue = totalValue.replace(/,/g, '');
+			var tempVatvals = tempVatText.value;		
 			var invoiceVat;
 			if(!isManualVAT){
-				invoiceVat = (invoiceNet * vatPtg(tempVatvals)) / 100;
+				//invoiceVat = (invoiceNet * vatPtg(tempVatvals)) / 100;
+				invoiceVat =(totalValue * tempVatvals)/(100+parseFloat( tempVatvals));
 				vatText.value = toDecimalFormatWithoutCurrency(invoiceVat);
 			}
 			var vat = vatText.value;
 			vat = vat.replace(/,/g, '');
-			var totalValue = invoiceNet * 1 + vat * 1;
+			//var totalValue = invoiceNet * 1 + vat * 1;
+			var invoiceNet=totalValue * 1 - vat * 1;
+			if(isVATApply == 0){
+				//totalValue = invoiceNet * 1;
+				invoiceNet=totalValue * 1;
+			}
+			Ti.API.info('HELLO 1 : ' + invoiceNet);	
+			Ti.API.info('HELLO 2 : ' + totalValue);		
+			//Ti.API.info('HELLO 3 : ' + toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000));
+			
+			//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+			invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
+	// 	
+		};
+
+	invoiceTotalText.addEventListener('change', function() {
+		//var invoiceNet = invoiceNetText.value;
+		var totalValue=invoiceTotalText.value;
+			//invoiceNet = invoiceNet.replace(/,/g, '');
+			totalValue = totalValue.replace(/,/g, '');
+			var tempVatvals = tempVatText.value;
+			var invoiceVat;
+			if(!isManualVAT){
+				//invoiceVat = (invoiceNet * vatPtg(tempVatvals)) / 100;
+				invoiceVat =(totalValue * tempVatvals)/(100+parseFloat( tempVatvals));
+				vatText.value = toDecimalFormatWithoutCurrency(invoiceVat);
+			}
+			var vat = vatText.value;
+			vat = vat.replace(/,/g, '');
+			//var totalValue = invoiceNet * 1 + vat * 1;
+			var invoiceNet=totalValue * 1 - vat * 1;
 			
 			if(isVATApply == 0){
-				totalValue = invoiceNet * 1;
+				//totalValue = invoiceNet * 1;
+				invoiceNet=totalValue * 1;
 			}		
 			
-			invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+			//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+			invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
 	});
 	
-	invoiceNetText.addEventListener('blur', function() { //changed action to blur
-		var pd_value = invoiceNetText.value * 1;
-		invoiceNetText.value = toDecimalFormatWithoutCurrency(pd_value);
+	// invoiceNetText.addEventListener('blur', function() { //changed action to blur
+	// 	var pd_value = invoiceNetText.value * 1;
+	// 	invoiceNetText.value = toDecimalFormatWithoutCurrency(pd_value);
+	// });
+
+	invoiceTotalText.addEventListener('blur', function() { //changed action to blur
+		var pd_value = invoiceTotalText.value * 1;
+		invoiceTotalText.value = toDecimalFormatWithoutCurrency(pd_value);
 	});
 
-	invoiceNetText.addEventListener('focus', function() { //changed action to blur
-			invoiceNetText.setSelection(0,invoiceNetText.value.length);
+	// invoiceNetText.addEventListener('focus', function() { //changed action to blur
+	// 		invoiceNetText.setSelection(0,invoiceNetText.value.length);
+	// });
+
+	invoiceTotalText.addEventListener('focus', function() { //changed action to blur
+		invoiceTotalText.setSelection(0,invoiceTotalText.value.length);
 	});
 
 	/*invoiceNetText.addEventListener('blur', function() {
@@ -2516,12 +2684,16 @@ exports.createinvoiceRecord = function(isCreditNote, btnSource) {
 	});*/
 
 	vatText.addEventListener('change', function() {
-		var invoiceNet = invoiceNetText.value;
-		invoiceNet = invoiceNet.replace(/,/g, '');
+		//var invoiceNet = invoiceNetText.value;
+		var totalValue = invoiceTotalText.value;
+		//invoiceNet = invoiceNet.replace(/,/g, '');
+		totalValue = totalValue.replace(/,/g, '');
 		var vat = vatText.value;
 		vat = vat.replace(/,/g, '');
-		var totalValue = invoiceNet * 1 + vat * 1;
-		invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+		//var totalValue = invoiceNet * 1 + vat * 1;
+		var invoiceNet = totalValue * 1 - vat * 1;
+		//invoiceTotalText.value = toDecimalFormatWithoutCurrency(Math.ceil(totalValue * 10000) / 10000);
+		invoiceNetText.value = toDecimalFormatWithoutCurrency(Math.ceil(invoiceNet * 10000) / 10000);
 	});
 
 	btnInvDate.addEventListener('click', function(e) {

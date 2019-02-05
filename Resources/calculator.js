@@ -1,11 +1,35 @@
 var txtObj;
+var type=0;
+//var is_addexpense;
+
 var calValue = Ti.UI.createTextField({
 	value: 0,
 	visible: false,
+  is_addexpense:false,
+
 });;
+
+
 var maxInputLength = 9;
 
 exports.calculatorView = function(){
+
+  var textv1 = require('addexpense');
+  var textv2 = require('createInvoice');
+  
+
+	
+     //var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+     
+     var logicalDesityFactor = Ti.Platform.displayCaps.logicalDensityFactor * 1;
+
+     var ex_height = Titanium.Platform.displayCaps.platformHeight * 1;
+     var ex_width = Ti.Platform.displayCaps.platformWidth * 1;
+     if (ex_height > ex_width) {
+          var deviceHeight = ((Titanium.Platform.displayCaps.platformHeight * 1) / logicalDesityFactor);
+     } else {
+          var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
+     }
 	
 	var renew = true;
 	var nextOperator = '';
@@ -552,8 +576,22 @@ exports.calculatorView = function(){
 	
 	
 	buttonOk.addEventListener('click', function () {
+
+
 		
-		txtObj.value = toDecimalFormatWithoutCurrency(parseFloat(display.value));
+	txtObj.value = toDecimalFormatWithoutCurrency(parseFloat(display.value));
+     if(type===1)
+     {
+          textv1.calcreturn();
+          type=0;
+     }
+     else if(type===2)
+     {
+          textv2.calcreturn();
+     }
+      
+ 
+    
 	    wrapperView.hide();
 	    
 	    display.value = '0'; // Resets the textbox to '0'
@@ -596,10 +634,38 @@ exports.setTxtObj = function(obj){
 		calValue.value = 0;
 	}else{
 		var txtValue = obj.value;
+    console.log('text value '+obj.name);
 		calValue.value = txtValue.replace(/,/g, '');
 	}
 // 	
 };
+
+exports.setTxtObj_addexpense = function(obj){
+  type=1;
+  txtObj = obj;
+  if(obj.value == undefined || obj.value =='' ){
+    calValue.value = 0;
+  }else{
+    var txtValue = obj.value;
+    console.log('text value 111'+obj.name);
+    calValue.value = txtValue.replace(/,/g, '');
+  }
+//  
+};
+
+exports.setTxtObj_createInvoice = function(obj){
+     type=2;
+     txtObj = obj;
+     if(obj.value == undefined || obj.value =='' ){
+       calValue.value = 0;
+     }else{
+       var txtValue = obj.value;
+       console.log('text value 111'+obj.name);
+       calValue.value = txtValue.replace(/,/g, '');
+     }
+   //  
+   };
+
 
 function setDisplyZero(){
 	this.display.value = '0'; // Resets the textbox to '0'
@@ -607,3 +673,5 @@ function setDisplyZero(){
 	this.nextOperator = '';   // Resets so that there was no previous operation to do
 	this.decimalPointConcatenated = false; // Indicate that a decimal point can now be added
 };
+
+

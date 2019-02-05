@@ -158,7 +158,17 @@ var bellowTaxElements = [];
 
 exports.addIncome = function() {
 
-	var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+	//var deviceHeight = Ti.Platform.displayCaps.platformHeight;
+
+	var logicalDesityFactor = Ti.Platform.displayCaps.logicalDensityFactor * 1;
+
+	var ex_height = Titanium.Platform.displayCaps.platformHeight * 1;
+	var ex_width = Ti.Platform.displayCaps.platformWidth * 1;
+	if (ex_height > ex_width) {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformHeight * 1) / logicalDesityFactor);
+	} else {
+		var deviceHeight = ((Titanium.Platform.displayCaps.platformWidth * 1) / logicalDesityFactor);
+	}
 	
 	//# Required Files
 
@@ -1067,6 +1077,7 @@ exports.addIncome = function() {
 
 	var view_title = Ti.UI.createView({
 		height : deviceHeight * 0.075,
+		//height : deviceHeight * 0.03,
 		top : '0%',
 		backgroundColor : '#2980B9',
 	});
@@ -2728,7 +2739,8 @@ exports.addIncome = function() {
 	var view_footerButtonView = Ti.UI.createView({
 		bottom : 0,
 		width : '100%',
-		height : appPixel * 7.5,
+		//height : appPixel * 7.5,
+		height : appPixel * 5,
 		backgroundColor : '#054e62'
 	});
 
